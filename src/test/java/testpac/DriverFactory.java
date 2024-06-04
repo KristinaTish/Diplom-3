@@ -13,7 +13,7 @@ public class DriverFactory extends ExternalResource {
     private WebDriver driver;
 
     private final static String STELLAR_URL = "https://stellarburgers.nomoreparties.site/";
-    private  String authToken;
+    private String authToken;
     private String yandex = "yandex";
     private String chrome = "chrome";
 
@@ -24,7 +24,8 @@ public class DriverFactory extends ExternalResource {
     @Override
     protected void before(){
         DriverFactory factory = new DriverFactory();
-        driver = factory.getWebDriver(yandex); //подставить сюда Яндекс или Хром в зависимости от выбранного браузера и запустить тесты
+        //подставить сюда Яндекс или Хром в зависимости от выбранного браузера и запустить тесты
+        driver = factory.getWebDriver(chrome);
         RestAssured.baseURI = STELLAR_URL;
     }
 

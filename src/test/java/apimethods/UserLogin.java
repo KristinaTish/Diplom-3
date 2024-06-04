@@ -10,14 +10,6 @@ package apimethods;
             return new UserLogin(user.getEmail(), user.getPassword());
         }
 
-        public static UserLogin wrongPassword (UserReg user){
-            return new UserLogin(user.getEmail(), "asaprocky");
-        }
-
-        public static UserLogin wrongMail (UserReg user){
-            return new UserLogin("Asaprocky1@gmail.com", user.getPassword());
-        }
-
         public UserLogin(String email, String password) {
             this.email = email;
             this.password = password;

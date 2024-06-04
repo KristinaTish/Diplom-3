@@ -21,3 +21,7 @@
 Для запуска тестов на том или ином браузере перед тестами необходимо зайти в класс DriverFactory и установить в методе before: chrome или yandex:
 
 driver = factory.getWebDriver(chrome);
+
+
+Замечания:
+Не работает прямая ссылка на страничку регистрации:[](https://stellarburgers.nomoreparties.site/register/) - открывается белая страница

@@ -22,7 +22,7 @@ public class RegistrationPage {
 
 
     public void waitForRegistrationPageLoad(){
-        new WebDriverWait(driver, Duration.ofSeconds(5))
+        new WebDriverWait(driver, Duration.ofSeconds(20))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.xpath(".//div/h2[contains(text(), 'Регистрация')]")));
     }
 

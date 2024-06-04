@@ -10,6 +10,10 @@ public class PasswordRecoverPage {
         this.driver = driver;
     }
 
+    public  void  openRecoveryPage(){
+        driver.get("https://stellarburgers.nomoreparties.site/forgot-password");
+    }
+
     public void login() {
       driver.findElement(By.linkText("Войти")).click();
     }
