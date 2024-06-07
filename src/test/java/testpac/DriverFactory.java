@@ -2,11 +2,11 @@ package testpac;
 
 import apimethods.UserApi;
 import io.restassured.RestAssured;
-import io.restassured.response.Response;
 import org.junit.rules.ExternalResource;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+
 
 
 public class DriverFactory extends ExternalResource {
@@ -39,7 +39,7 @@ public class DriverFactory extends ExternalResource {
 
 
 public WebDriver getWebDriver(String browserName){
-    browserName.toLowerCase();
+    browserName = browserName.toLowerCase();
     switch(browserName){
         case "chrome":
             return new ChromeDriver();

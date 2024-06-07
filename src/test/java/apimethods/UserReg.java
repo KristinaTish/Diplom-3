@@ -1,7 +1,5 @@
 package apimethods;
 
-import org.apache.maven.surefire.shared.lang3.RandomStringUtils;
-
 public class UserReg {
 
     // это для тела JSON

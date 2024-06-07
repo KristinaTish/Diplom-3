@@ -24,8 +24,13 @@ public class MainPage {
     }
 
     public void waitForMainPageLoad() {
-        new WebDriverWait(driver, Duration.ofSeconds(5)).
+        new WebDriverWait(driver, Duration.ofSeconds(10)).
                 until(ExpectedConditions.visibilityOfElementLocated(By.xpath(".//a[contains(@class, 'AppHeader')]/p[contains(text(), 'Личный Кабинет')]")));
+    }
+
+    public void waitForToken() {
+        new WebDriverWait(driver, Duration.ofSeconds(10)).
+                until(ExpectedConditions.numberOfElementsToBeMoreThan(By.cssSelector("a[class^='BurgerIngredient']"),7));
     }
 
     public void clickPersonalAccount() {

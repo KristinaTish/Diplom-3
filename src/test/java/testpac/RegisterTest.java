@@ -1,7 +1,10 @@
 package testpac;
 
+
 import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,9 +24,31 @@ public class RegisterTest {
 
     private final String password;
 
+    private WebDriver driver;
+    private MainPage page1;
+    private LoginPage logPage;
+    private  RegistrationPage regPage;
+
+
 //Проверить успешную регистрацию.
     @Rule
     public DriverFactory driverFactory = new DriverFactory();
+
+    @Before
+    public void  setup(){
+        driver = driverFactory.getDriver();
+        page1 = new MainPage(driver);
+        logPage = new LoginPage(driver);
+        regPage = new RegistrationPage(driver);
+    }
+
+    @After
+    public void getToken(){
+        JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
+        String accessToken = (String) jsExecutor.executeScript("return localStorage.getItem('accessToken');");
+        System.out.println("Access Token: " + accessToken);
+        driverFactory.setAuthToken(accessToken);
+    }
 
 
     public RegisterTest(String name, String email, String password) {
@@ -39,7 +64,6 @@ public class RegisterTest {
                 {"Полина", "qwerty2q@mail.ru", "qwerty"}, // проверим минимальный пароль 6 симв
                 {"Полина", "qwerty2q@mail.ru", "qwerty1"}, //пароль 7 символов
                 {"Яна", "москва@москва.рф", "qwerty123"}, // почта кириллицей
-
         };
     }
 
@@ -47,11 +71,6 @@ public class RegisterTest {
     @DisplayName("Register using direct link")
     @Description("Try to register using direct link on registration page: https://stellarburgers.nomoreparties.site/register/ ")
     public void testSuccessfulRegistration1() {
-        WebDriver driver = driverFactory.getDriver();
-        MainPage page1 = new MainPage(driver);
-        LoginPage logPage = new LoginPage(driver);
-        RegistrationPage regPage = new RegistrationPage(driver);
-
 // используем прямую ссылку на страницу регистрации, зачастую она не работает
         regPage.openRegistrationPage();
         regPage.waitForRegistrationPageLoad();
@@ -59,13 +78,7 @@ public class RegisterTest {
 
         logPage.waitForLoginPageLoad();
         logPage.login(email, password);
-        page1.waitForMainPageLoad();
-
-// извлекаем токен из localStorage
-        JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
-        String accessToken = (String) jsExecutor.executeScript("return localStorage.getItem('accessToken');");
-        System.out.println("Access Token: " + accessToken);
-        driverFactory.setAuthToken(accessToken); // передаем токен в after, где происходит удаление пользователя
+        page1.waitForToken();
     }
 
 
@@ -73,11 +86,6 @@ public class RegisterTest {
     @DisplayName("Full registration itinerary")
     @Description("Try to register starting itinerary from main page ")
     public void testSuccessfulRegistration() {
-        WebDriver driver = driverFactory.getDriver();
-        MainPage page1 = new MainPage(driver);
-        LoginPage logPage = new LoginPage(driver);
-        RegistrationPage regPage = new RegistrationPage(driver);
-
         page1.openSite();
         page1.waitForMainPageLoad();
         page1.clickPersonalAccount();
@@ -88,11 +96,7 @@ public class RegisterTest {
 
         logPage.waitForLoginPageLoad();
         logPage.login(email, password);
-        page1.waitForMainPageLoad();
+        page1.waitForToken();
 
-        JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
-        String accessToken = (String) jsExecutor.executeScript("return localStorage.getItem('accessToken');");
-        System.out.println("Access Token: " + accessToken); // на всякий оставлю, чтобы в случае проблемы проверить правильность токена
-        driverFactory.setAuthToken(accessToken);
     }
 }

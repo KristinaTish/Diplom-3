@@ -5,6 +5,7 @@ import apimethods.UserReg;
 import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
@@ -14,23 +15,35 @@ import pojopac.ProfilePage;
 
 public class AccountTest {
 
+    private WebDriver driver;
+    private MainPage page1;
+    private LoginPage logPage;
+    private ProfilePage profile;
+
+    private UserReg user;
+
     @Rule
     public DriverFactory driverFactory = new DriverFactory();
+
+    @Before
+    public void setup(){
+        driver = driverFactory.getDriver();
+        page1 = new MainPage(driver);
+        logPage = new LoginPage(driver);
+        profile = new ProfilePage(driver);
+        user = UserReg.someUserData();
+        // API - создание пользователя и получение токена
+        Response response = UserApi.createUser(user);
+        String accessToken = UserApi.getToken(response);
+        driverFactory.setAuthToken(accessToken);
+    }
+
 
     // Проверь переход по клику на «Личный кабинет».
     @Test
     @DisplayName("Open Account Profile test")
     @Description("Here we check that we switch to profile when we click PersonalAccount-button while being logged in")
     public void openAccountProfile() {
-        WebDriver driver = driverFactory.getDriver();
-        MainPage page1 = new MainPage(driver);
-        LoginPage logPage = new LoginPage(driver);
-        ProfilePage profile = new ProfilePage(driver);
-        UserReg user = UserReg.someUserData();
-        // API - создание пользователя и получение токена
-        Response response = UserApi.createUser(user);
-        String accessToken = UserApi.getToken(response);
-        driverFactory.setAuthToken(accessToken);
         // логин
         page1.openSite();
         page1.clickLoginButton();
@@ -47,15 +60,6 @@ public class AccountTest {
     @DisplayName("Switch to main page by clicking Constructor test")
     @Description("Here we check that we switch to main page when we click on Constructor from profile")
     public void clickConstructorButtonTest() {
-        WebDriver driver = driverFactory.getDriver();
-        MainPage page1 = new MainPage(driver);
-        LoginPage logPage = new LoginPage(driver);
-        ProfilePage profile = new ProfilePage(driver);
-        // API - создание пользователя и получение токена
-        UserReg user = UserReg.someUserData();
-        Response response = UserApi.createUser(user);
-        String accessToken = UserApi.getToken(response);
-        driverFactory.setAuthToken(accessToken);
         // логин
         page1.openSite();
         page1.clickLoginButton();
@@ -75,15 +79,6 @@ public class AccountTest {
     @DisplayName("Click on logo from Profile")
     @Description("Here we check that we switch to main page when we click logo")
     public void clickOnLogoTest() {
-        WebDriver driver = driverFactory.getDriver();
-        MainPage page1 = new MainPage(driver);
-        LoginPage logPage = new LoginPage(driver);
-        ProfilePage profile = new ProfilePage(driver);
-        // API - создание пользователя и получение токена
-        UserReg user = UserReg.someUserData();
-        Response response = UserApi.createUser(user);
-        String accessToken = UserApi.getToken(response);
-        driverFactory.setAuthToken(accessToken);
         // логин
         page1.openSite();
         page1.clickLoginButton();
@@ -103,15 +98,6 @@ public class AccountTest {
     @DisplayName("Log out test")
     @Description("Here we check that we log out when push logout-button on profile page")
     public void logoutTest() {
-        WebDriver driver = driverFactory.getDriver();
-        MainPage page1 = new MainPage(driver);
-        LoginPage logPage = new LoginPage(driver);
-        ProfilePage profile = new ProfilePage(driver);
-        // API - создание пользователя и получение токена
-        UserReg user = UserReg.someUserData();
-        Response response = UserApi.createUser(user);
-        String accessToken = UserApi.getToken(response);
-        driverFactory.setAuthToken(accessToken);
         // логин
         page1.openSite();
         page1.clickLoginButton();
@@ -124,6 +110,5 @@ public class AccountTest {
         // выход
         profile.logout();
         logPage.waitForLoginPageLoad();
-
     }
 }

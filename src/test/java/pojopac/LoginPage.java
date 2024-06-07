@@ -49,4 +49,5 @@ public class LoginPage {
     public void clickForgotPassword(){
         driver.findElement(By.linkText("Восстановить пароль")).click();
     }
+
 }
